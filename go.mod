@@ -1,4 +1,4 @@
-module github.com/Dimonyga/tgclient
+module github.com/3bl3gamer/tgclient
 
 go 1.20
 
