@@ -65,10 +65,10 @@ func (d *Downloader) Start(tg *TGClient) {
 	d.tg = tg
 	d.fileMTs = make(map[int32]*mtproto.MTProto)
 	d.fileMTsMutex = &sync.Mutex{}
-	d.filePartsQueue = make(chan *filePart, 4)
+	d.filePartsQueue = make(chan *filePart, 2)
 	d.log = tg.log
 
-	for i := 0; i < 4; i++ {
+	for i := 0; i < 2; i++ {
 		go d.partsDownloadRoutine()
 	}
 }
