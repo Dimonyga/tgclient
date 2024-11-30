@@ -544,7 +544,7 @@ func (m *MTProto) SendSyncRetry(
 
 		if floodWait, ok := IsFloodError(res); ok {
 			if retryNum < floodNumShortRetries {
-				floodWait = time.Second
+				floodWait = failRetryInterval
 			}
 			if floodWait > floodMaxWait {
 				return res
