@@ -198,7 +198,6 @@ func (d *Downloader) partsDownloadRoutine() {
 	d.routinesWG.Add(1)
 	for part := range d.filePartsQueue {
 		fileResp := FileResponse{DcID: part.dcID}
-
 		mt, err := d.getFileMT(part.dcID)
 		if err != nil {
 			fileResp.Err = merry.Wrap(err)
@@ -234,9 +233,9 @@ func (d *Downloader) partsDownloadRoutine() {
 		default:
 			fileResp.Err = merry.New(mtproto.UnexpectedTL("file part", resTL))
 		}
-
 		part.outChan <- &fileResp
 		close(part.outChan)
+		time.Sleep(1 * time.Second)
 	}
 	d.routinesWG.Done()
 }
