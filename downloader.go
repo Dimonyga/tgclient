@@ -65,12 +65,9 @@ func (d *Downloader) Start(tg *TGClient) {
 	d.tg = tg
 	d.fileMTs = make(map[int32]*mtproto.MTProto)
 	d.fileMTsMutex = &sync.Mutex{}
-	d.filePartsQueue = make(chan *filePart, 2)
+	d.filePartsQueue = make(chan *filePart, 1)
 	d.log = tg.log
-
-	for i := 0; i < 2; i++ {
-		go d.partsDownloadRoutine()
-	}
+	go d.partsDownloadRoutine()
 }
 
 func (d *Downloader) Stop() error {
@@ -213,7 +210,7 @@ func (d *Downloader) partsDownloadRoutine() {
 			Location: part.location,
 			Offset:   part.offset,
 			Limit:    part.limit,
-		}, time.Second, 5, 10*time.Second)
+		}, 2*time.Second, 5, 10*time.Second)
 
 		switch res := resTL.(type) {
 		case mtproto.TL_upload_file:
